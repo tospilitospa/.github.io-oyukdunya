@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Bölüm</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 id="bolumBaslik">Yükleniyor...</h1>
+    <p id="bolumMetin"></p>
+
+    <div class="button-nav">
+      <a id="oncekiBtn" href="#">← Önceki</a>
+      <a id="sonrakiBtn" href="#">Sonraki →</a>
+    </div>
+  </div>
+
+  <script src="bolumler_meta.js"></script>
+  <script>
+    // Bölüm metnini yüklemek ve göstermek için async fonksiyon
+    async function bolumuYukle() {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get("id")); // ID'yi al ve sayıya çevir
+
+      const bolumBaslikElement = document.getElementById("bolumBaslik");
+      const bolumMetinElement = document.getElementById("bolumMetin");
+      const navElement = document.querySelector(".button-nav");
+      const oncekiBtn = document.getElementById("oncekiBtn");
+      const sonrakiBtn = document.getElementById("sonrakiBtn");
+
+      // Geçerli bir bölüm ID'si mi kontrol et
+      if (isNaN(id) || id < 0 || id >= bolumlerMeta.length) {
+        bolumBaslikElement.textContent = "Bölüm Bulunamadı";
+        bolumMetinElement.textContent = "Geçersiz veya bulunamayan bölüm numarası.";
+        navElement.style.display = 'none'; // Navigasyon butonlarını gizle
+        return; // Fonksiyondan çık
+      }
+
+      // Meta veriden ilgili bölümü bul
+      const bolumMeta = bolumlerMeta[id];
+      bolumBaslikElement.textContent = `Bölüm ${bolumMeta.id + 1}: ${bolumMeta.baslik}`;
+      bolumMetinElement.textContent = "Metin yükleniyor..."; // Kullanıcıya bilgi ver
+
+      try {
+        // fetch ile metin dosyasını iste
+        const response = await fetch(bolumMeta.dosyaAdi);
+
+        // İstek başarılı mı kontrol et (örn: 404 Not Found hatası var mı?)
+        if (!response.ok) {
+          throw new Error(`Dosya yüklenemedi: ${response.statusText}`);
+        }
+
+        // Yanıttan metin içeriğini al
+        const metin = await response.text();
+
+        // Metni sayfada göster
+        bolumMetinElement.textContent = metin;
+
+      } catch (error) {
+        // Bir hata oluşursa kullanıcıya bildir
+        console.error("Bölüm yüklenirken hata oluştu:", error);
+        bolumMetinElement.textContent = "Bölüm içeriği yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
+        navElement.style.display = 'none'; // Hata durumunda butonları gizle
+        return;
+      }
+
+      // Navigasyon Butonlarını Ayarla
+      navElement.style.display = 'flex'; // Hata yoksa butonları göster (flex varsayılan)
+
+      // Önceki Buton
+      if (id > 0) {
+        oncekiBtn.href = `bolum.html?id=${id - 1}`;
+        oncekiBtn.style.visibility = "visible";
+      } else {
+        oncekiBtn.style.visibility = "hidden";
+      }
+
+      // Sonraki Buton
+      if (id < bolumlerMeta.length - 1) {
+        sonrakiBtn.href = `bolum.html?id=${id + 1}`;
+        sonrakiBtn.style.visibility = "visible";
+      } else {
+        sonrakiBtn.style.visibility = "hidden";
+      }
+    }
+
+    // Sayfa yüklendiğinde bölümü yükle
+    bolumuYukle();
+
+  </script>
+  </body>
+</html>

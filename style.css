@@ -1,0 +1,95 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+#bolumMetin {
+  white-space: pre-wrap; /* Bu satır önemli! */
+  line-height: 1.7;
+  font-size: 1.1em;
+  /* Diğer p stillerini buraya da ekleyebilirsin veya p'den miras almasını sağlayabilirsin */
+}
+h1, h2 {
+  color: #ffffff;
+  font-size: 1.8em;
+}
+
+p {
+  line-height: 1.7;
+  font-size: 1.1em;
+}
+
+a {
+  color: #90caf9;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+.button-nav {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.button-nav a {
+  flex: 1 1 auto;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #1976d2;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.button-nav a:hover {
+  background-color: #1565c0;
+}
+
+/* Mobil uyum */
+@media (max-width: 600px) {
+  .container {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  h1, h2 {
+    font-size: 1.4em;
+  }
+
+  p {
+    font-size: 1em;
+  }
+
+  .button-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button-nav a {
+    width: 100%;
+  }
+  /* style.css içinde */
+
+
+  
+}
